@@ -1,0 +1,38 @@
+@tailwind utilities;
+
+@layer base {
+  :root {
+    
+    --background: 0 0% 98%;
+  }
+
+  html{
+    min-height: 100%;
+    font-family: 'Onest', sans-serif;
+    background: linear-gradient(#F6FF99, #476EAE, #2C4B99);
+    color: hsl(var(--background))
+  }
+}
+
+.nav-button-wrapper {
+  display: inline-block;
+  position: relative;
+  border-radius: 9999px;
+  padding: 2px;
+  background-color: transparent;
+  transition: background 0.3s;
+}
+
+.nav-button-wrapper:hover {
+  background: linear-gradient(to right, #F6FF99, #476EAE, #2C4B99);
+}
+
+.nav-button {
+  display: block;
+  border-radius: 9999px;
+  padding: 0.5rem 1.5rem;
+  background-color: transparent;
+  color: #1e40af;
+  font-weight: 500;
+  text-decoration: none;
+}
