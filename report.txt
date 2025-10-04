@@ -1,0 +1,53 @@
+Практическая работа №3
+Анализ web-сайтов
+Сайт habr:
+1.
+в head хранятся meta, ссылки на icon ссылки на стили, и базовая информация(название head, class)
+
+в html размещаются теги head и body
+в body находятся js скрипты, links, div
+2.
+в body есть article, header, footer, nav
+в head нету семантических тегов
+3.
+атрибуты тегов class, href, style, id используется для расширения функционала
+
+отчет lighthouse
+perfomance: 44
+accessibility: 52
+best practices: 75
+SEO: 85
+
+Сайт github:
+1.
+в head есть meta, link, ссылки на icon и базовая информация(название head, class)
+в html размещаются теги head и body
+в body находятся js скрипты, template, links, styles, div
+2. 
+	в body есть nav, header, aside, footer
+	в head нету семантических тегов
+3.
+атрибуты тегов class, href, style, id используются для расширения функционала
+
+отчет lighthouse
+perfomance: 57
+accessibility: 97
+best practices: 96
+SEO: 100
+
+Сайт grsu:
+1. 
+	в head хранятся scripts, meta, link, title
+	в html размещаются теги head, body
+	в body находятся js скрипты, link, div, styles
+2.
+	в body есть nav, header, footer
+	в head нету семантических тегов
+3.
+атрибуты тегов class, href, style, id используется для расширения функционала.
+
+отчет lighthouse
+perfomance: 50
+accessibility: 57
+best practices: 43
+SEO: 100
