@@ -13,11 +13,11 @@ type NavButton = {
 
 const NavButtons = ({ label, href, logo }: NavButton) => {
   return (
-    <div className="nav-button-wrapper">
-        <Link href={href}>
+    <div className="nav-button-wrapper w-full">
+        <Link href={href} className="flex items-center justify-center w-full h-full">
             {logo ? 
             (<Image src={logo} alt="Logo" width={53} height={50}/>) :
-            (<span className="text-[#000]">{label}</span>)}
+            (<span className="font-semibold text-[#000] text-[20px]">{label}</span>)}
         </Link>
     </div>
   );

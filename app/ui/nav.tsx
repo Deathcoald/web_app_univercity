@@ -10,8 +10,8 @@ import { flower } from "./fonts";
 
 const SideNav = () => {
   return (
-    <div className="bg-transparent flex items-center justify-between px-4 py-2">
-      <div className="flex items-center space-x-4px">
+    <div className="flex items-center justify-between ">
+      <div className="flex items-center margin: 20px">
         <Link href={"/"}>
             <Image src={Logo} alt="Logo" width={184} height={164} />
         </Link>
@@ -19,11 +19,11 @@ const SideNav = () => {
           Fire Beavers
         </p>
       </div>
-      <div className="flex items-center justify-evenly ml-8">
-            <NavButtons label="Outcomes" href="/outcomes"/>
-            <NavButtons label="Statistics" href="/statistics"/>
-            <NavButtons label="Incomes" href="/incomes"/>
-            <NavButtons label="Profile" href="/profile" logo={user}/>
+      <div className="flex items-center justify-between ml-8">
+            <NavButtons label="Расходы" href="/outcomes"/>
+            <NavButtons label="Статистика" href="/statistics"/>
+            <NavButtons label="Доходы" href="/income"/>
+            <NavButtons label="Profile" href="/login" logo={user}/>
             <NavButtons label="Profile" href="profile" logo={logout}/>
       </div>
     </div>
