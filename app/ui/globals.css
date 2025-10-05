@@ -2,37 +2,36 @@
 
 @layer base {
   :root {
-    
     --background: 0 0% 98%;
   }
 
-  html{
+  html {
     min-height: 100%;
-    font-family: 'Onest', sans-serif;
-    background: linear-gradient(#F6FF99, #476EAE, #2C4B99);
-    color: hsl(var(--background))
+    font-family: "Onest", sans-serif;
+    background: linear-gradient(#f6ff99, #476eae, #2c4b99);
+    color: hsl(var(--background));
   }
 }
 
 .login-form {
   border-radius: 20px;
-  font-family: 'Onest', sans-serif;
-  background: linear-gradient(#EAA8A8, #58B58D);
+  font-family: "Onest", sans-serif;
+  background: linear-gradient(#eaa8a8, #58b58d);
   color: hsl(var(--background));
   width: 70%;
   max-width: 450px;
   min-height: 350px;
   max-height: 350px;
-  box-shadow:  -25px 40px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: -25px 40px 0px rgba(0, 0, 0, 0.25);
 }
 
-.default-form{
+.default-form {
   border-radius: 10px;
   width: 100%;
-  font-family: 'Onest', sans-serif;
-  background: linear-gradient(#EAA8A8, #58B58D);
+  font-family: "Onest", sans-serif;
+  background: linear-gradient(#eaa8a8, #58b58d);
   color: hsl(var(--background));
-  box-shadow:  -25px 40px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: -25px 40px 0px rgba(0, 0, 0, 0.25);
 }
 
 .nav-button-wrapper {
@@ -47,7 +46,7 @@
 }
 
 .nav-button-wrapper:hover {
-  background: linear-gradient(to right, #F6FF99, #476EAE, #2C4B99);
+  background: linear-gradient(to right, #f6ff99, #476eae, #2c4b99);
 }
 
 .nav-button {
@@ -69,7 +68,7 @@ form {
 input {
   margin-bottom: 20px;
   padding: 10px;
-  background-color: #FFEAEB;
+  background-color: #ffeaeb;
   border-color: black;
   border-radius: 20px;
 }

@@ -12,8 +12,8 @@ export default function Home() {
 
   return (
     <div>
-      <SideNav/>
-      <Form type="outcomes" options={options}/>
+      <SideNav />
+      <Form type="outcomes" options={options} />
     </div>
   );
 }

@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <div>
       <SideNav />
-      <Form type="incomes" options={options}/>
+      <Form type="incomes" options={options} />
     </div>
   );
 }

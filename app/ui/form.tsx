@@ -7,23 +7,23 @@ type Option = "present" | "salary" | "percent" | "etc";
 
 type FormProps = {
   type: "incomes" | "outcomes";
-  options: {value: string, label: string}[]
+  options: { value: string; label: string }[];
 };
 
 export default function Form({ type, options }: FormProps) {
   const [option, setOption] = useState("");
-  
-  const isIcome = type === "incomes"
+
+  const isIcome = type === "incomes";
 
   return (
     <div className="default-form flex shadow-2xl w-full h-full bg-white rounded-2xl overflow-hidden">
-      <div className="w-full h-full flex flex-col justify-center items-center">
-
-      </div>
+      <div className="w-full h-full flex flex-col justify-center items-center"></div>
 
       <div className="w-full h-full p-10 flex flex-col justify-center">
         <form className="flex flex-col gap-6 sm:w-full md:w-1/2 lg:w-1/2">
-          <p className="text-2xl font-semibold text-gray-800 mb-2">{isIcome ? "Доходы" : "Расходы"}</p>
+          <p className="text-2xl font-semibold text-gray-800 mb-2">
+            {isIcome ? "Доходы" : "Расходы"}
+          </p>
 
           <div className="flex flex-col gap-2">
             <label className="text-gray-600 text-sm">Сумма</label>

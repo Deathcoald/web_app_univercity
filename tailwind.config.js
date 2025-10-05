@@ -10,7 +10,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        foreground: 'hsl(var(--foreground))',
+        foreground: "hsl(var(--foreground))",
       },
     },
   },
