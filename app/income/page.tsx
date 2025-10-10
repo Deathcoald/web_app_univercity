@@ -9,7 +9,6 @@ export default function Home() {
     { value: "percent", label: "Проценты в банке" },
     { value: "etc", label: "Другое" },
   ];
-
   return (
     <div>
       <SideNav />
