@@ -31,7 +31,6 @@ export default function Form({ type, options }: FormProps) {
 
   const isIncome = type === "incomes";
 
-  // --- обновляем данные под выбранный период ---
   useEffect(() => {
     let mockPercent: Category[] = [];
 
@@ -71,14 +70,12 @@ export default function Form({ type, options }: FormProps) {
     setPercent(mockPercent);
   }, [period]);
 
-  // --- создаём/обновляем график ---
   useEffect(() => {
     if (!canvasRef.current || percent.length === 0) return;
 
     const ctx = canvasRef.current.getContext("2d");
     if (!ctx) return;
 
-    // уничтожаем старый график перед созданием нового
     if (chartRef.current) {
       chartRef.current.destroy();
       chartRef.current = null;
@@ -99,7 +96,7 @@ export default function Form({ type, options }: FormProps) {
         ],
       },
       options: {
-        cutout: "60%", // размер "дырки"
+        cutout: "60%",
         responsive: true,
         plugins: {
           legend: { display: false },
@@ -112,7 +109,6 @@ export default function Form({ type, options }: FormProps) {
   return (
     <div className="default-form flex shadow-2xl w-full h-full bg-white rounded-2xl">
       <div className="w-full h-full flex flex-col justify-center items-center text-white rounded-l-2xl p-6">
-        {/* --- кнопки выбора периода --- */}
         <div className="flex gap-3 mb-6">
           {(["day", "week", "month", "year"] as Period[]).map((p) => (
             <button
@@ -135,7 +131,6 @@ export default function Form({ type, options }: FormProps) {
           ))}
         </div>
 
-        {/* --- график --- */}
         <div className="relative w-2/5 aspect-square flex items-center justify-center">
           <canvas ref={canvasRef}></canvas>
           <span className="text-2xl font-bold z-10 text-gray-800 bg-white rounded-full px-3 py-1">
@@ -146,7 +141,6 @@ export default function Form({ type, options }: FormProps) {
         <p className="mt-4 text-lg font-medium">Chart JS</p>
       </div>
 
-      {/* --- форма --- */}
       <div className="w-full h-full p-10 flex flex-col justify-center">
         <form className="flex flex-col gap-6 sm:w-full md:w-1/2 lg:w-1/2">
           <p className="text-2xl font-semibold text-gray-800 mb-2">
