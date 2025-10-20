@@ -42,7 +42,7 @@ export default function AuthForm({ type }: AuthFormProps) {
       }
 
       if (data.token) {
-        localStorage.setItem("token", data.token);
+        sessionStorage.setItem("token", data.token);
       }
 
       router.push("/");
