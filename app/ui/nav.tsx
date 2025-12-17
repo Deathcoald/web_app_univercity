@@ -41,7 +41,6 @@ const SideNav = () => {
     localStorage.setItem("theme", isDark ? "dark" : "light");
   };
 
-  // Drag & Drop
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
     e.dataTransfer.setData("dragIndex", index.toString());
   };

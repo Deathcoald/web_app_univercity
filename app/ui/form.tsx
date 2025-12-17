@@ -1,16 +1,11 @@
 "use client";
 
 import { Chart, ArcElement, Tooltip, Legend, DoughnutController } from "chart.js";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Select from "./select";
+import DonutChart from "./donut";
 
 Chart.register(ArcElement, Tooltip, Legend, DoughnutController);
-
-type Category = {
-  category_name: string;
-  amount: number;
-  color: string;
-};
 
 type Option = "present" | "salary" | "percent" | "etc";
 type Period = "day" | "week" | "month" | "year";
@@ -20,173 +15,159 @@ type FormProps = {
   options: { value: string; label: string }[];
 };
 
+type Category = {
+  category_name: string;
+  amount: number;
+  color: string;
+};
+
 export default function Form({ type, options }: FormProps) {
   const [option, setOption] = useState<Option>("present");
-  const [percent, setPercent] = useState<Category[]>([]);
-  const [color, setColor] = useState("#476EAE");
   const [period, setPeriod] = useState<Period>("day");
+  const [color] = useState("#476EAE");
+  const [percent, setPercent] = useState<Category[]>([]);
 
-  const chartRef = useRef<Chart | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [amount, setAmount] = useState("");
+  const [date, setDate] = useState("");
+  const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const isIncome = type === "incomes";
 
   useEffect(() => {
-    let mockPercent: Category[] = [];
-
-    switch (period) {
-      case "day":
-        mockPercent.push({
-          category_name: "salary",
-          amount: 500,
-          color: "blue",
-        });
-        break;
-
-      case "week":
-        mockPercent.push(
-          { category_name: "salary", amount: 500, color: "blue" },
-          { category_name: "present", amount: 100, color: "red" },
-          { category_name: "bank", amount: 250, color: "green" }
-        );
-        break;
-
-      case "month":
-        mockPercent.push(
-          { category_name: "salary", amount: 1200, color: "blue" },
-          { category_name: "present", amount: 300, color: "orange" }
-        );
-        break;
-
-      case "year":
-        mockPercent.push(
-          { category_name: "salary", amount: 6000, color: "blue" },
-          { category_name: "present", amount: 1500, color: "red" },
-          { category_name: "investments", amount: 3000, color: "green" }
-        );
-        break;
-    }
-
-    setPercent(mockPercent);
+    fetchData(period);
   }, [period]);
 
-  useEffect(() => {
-    if (!canvasRef.current || percent.length === 0) return;
+  async function fetchData(period: Period) {
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
-    const ctx = canvasRef.current.getContext("2d");
-    if (!ctx) return;
+    try {
+      const res = await fetch(`http://localhost:8000/finance?type=${type}&period=${period}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    if (chartRef.current) {
-      chartRef.current.destroy();
-      chartRef.current = null;
+      if (!res.ok) throw new Error("Ошибка при загрузке данных");
+
+      const data: Category[] = await res.json();
+      setPercent(data);
+    } catch (err: any) {
+      alert(err.message);
+    }
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    if (!amount || !date) {
+      alert("Заполни сумму и дату");
+      return;
     }
 
-    chartRef.current = new Chart(ctx, {
-      type: "doughnut",
-      data: {
-        labels: percent.map((item) => item.category_name),
-        datasets: [
-          {
-            data: percent.map((item) => item.amount),
-            backgroundColor: percent.map((item) =>
-              item.category_name === option ? color : item.color
-            ),
-            borderWidth: 0,
-          },
-        ],
-      },
-      options: {
-        cutout: "60%",
-        responsive: true,
-        plugins: {
-          legend: { display: false },
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Нет авторизации");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("http://localhost:8000/create", {
+        method: "POST",
+        headers: {  
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        animation: { duration: 1000 },
-      },
-    });
-  }, [percent, color, option]);
+        body: JSON.stringify({
+          type,
+          amount: Number(amount),
+          category: option,
+          date,
+          comment,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || "Ошибка сервера");
+
+      setAmount("");
+      setDate("");
+      setComment("");
+
+      fetchData(period);
+
+      alert("Сохранено");
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="default-form flex shadow-2xl w-full h-full bg-white rounded-2xl">
-      <div className="w-full h-full flex flex-col justify-center items-center text-white rounded-l-2xl p-6">
+      <div className="w-full h-full flex flex-col items-center p-6">
         <div className="flex gap-3 mb-6">
           {(["day", "week", "month", "year"] as Period[]).map((p) => (
             <button
               key={p}
               onClick={() => setPeriod(p)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                period === p
-                  ? "bg-white text-[#476EAE] shadow-md"
-                  : "bg-[#5a78c7] hover:bg-[#6d89d9]"
+              className={`px-4 py-2 rounded-full text-sm ${
+                period === p ? "bg-white text-blue-600" : "bg-blue-500 text-white"
               }`}
             >
-              {p === "day"
-                ? "День"
-                : p === "week"
-                ? "Неделя"
-                : p === "month"
-                ? "Месяц"
-                : "Год"}
+              {p}
             </button>
           ))}
         </div>
 
-        <div className="relative w-2/5 aspect-square flex items-center justify-center">
-          <canvas ref={canvasRef}></canvas>
-          <span className="text-2xl font-bold z-10 text-gray-800 bg-white rounded-full px-3 py-1">
-            {period}
-          </span>
+        <div className="w-2/5">
+          <DonutChart percent={percent} option={option} color={color} label={period} />
         </div>
-
-        <p className="mt-4 text-lg font-medium">Chart JS</p>
       </div>
 
-      <div className="w-full h-full p-10 flex flex-col justify-center">
-        <form className="flex flex-col gap-6 sm:w-full md:w-1/2 lg:w-1/2">
-          <p className="text-2xl font-semibold text-gray-800 mb-2">
+      <div className="w-full p-10">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6 md:w-1/2">
+          <h2 className="text-2xl font-semibold">
             {isIncome ? "Доходы" : "Расходы"}
-          </p>
+          </h2>
 
-          <div className="flex flex-col gap-2">
-            <label className="text-gray-600 text-sm">Сумма</label>
-            <input
-              type="number"
-              placeholder="Введите сумму"
-              className="px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
+          <input
+            type="number"
+            placeholder="Сумма"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            className="border p-2 rounded"
+          />
 
-          <div className="flex flex-col gap-2 rounded-20px">
-            <label className="text-sm rounded-20px">Категория</label>
-            <Select
-              options={options}
-              value={option}
-              onChange={(val) => setOption(val as Option)}
-            />
-          </div>
+          <Select
+            options={options}
+            value={option}
+            onChange={(v) => setOption(v as Option)}
+          />
 
-          <div className="flex flex-col gap-2">
-            <label className="text-gray-600 text-sm">Дата</label>
-            <input
-              type="date"
-              className="px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="border p-2 rounded"
+          />
 
-          <div className="flex flex-col gap-2">
-            <label className="text-gray-600 text-sm">Комментарий</label>
-            <input
-              type="text"
-              placeholder="Комментарий"
-              className="px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
+          <input
+            type="text"
+            placeholder="Комментарий"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            className="border p-2 rounded"
+          />
 
           <button
-            type="submit"
-            className="mt-4 py-3 rounded-full bg-gradient-to-r from-[#8896BA] to-[#2555da] text-white font-semibold hover:opacity-90 transition-all shadow-md"
+            disabled={loading}
+            className="bg-blue-600 text-white py-3 rounded"
           >
-            Сохранить
+            {loading ? "Сохранение..." : "Сохранить"}
           </button>
         </form>
       </div>
